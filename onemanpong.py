@@ -5,6 +5,10 @@
 
 import turtle
 import time
+import os
+import sys
+import time
+import keyboard
 
 w = turtle.Screen()
 w.title("One Man Pong by @zaid-hassan")
@@ -72,7 +76,7 @@ inst.color("grey")
 inst.penup()
 inst.hideturtle()
 inst.goto(0, 230)
-inst.write("Use <- Left and right -> arrow keys to play", align="center", font=("Courier", 8, "bold"))
+inst.write("Use <- Left and right -> arrow keys to play, Esc to exit and space to restart", align="center", font=("Courier", 8, "bold"))
 
 # Function 
 # ---------------------movements---------------------
@@ -92,12 +96,25 @@ def paddle_right():
     if x > 350:
         paddle.setx(350)
 
+def close():
+    turtle.bye()
+
+def res():
+    time.sleep(1)
+    os.execl(sys.executable, sys.executable, *sys.argv)
+
 # Keyboard Binding
 w.listen()  # In the turtle module we need to do <windowname>.listen | This will tell it to listen for keyboard input
 w.onkeypress(paddle_left, "Left")  # whats happening here is w.listen tells to listen to the keyboard, and if the keypress is "left" (.onkeypress) then call the function paddle_left
 w.onkeypress(paddle_right, "Right")
 
-time.sleep(.5)
+w.listen()
+w.onkeypress(close, "Escape")
+
+w.listen()
+w.onkeypress(res, "space")
+
+time.sleep(.6)
 # Main Game
 while True:
     w.update()
@@ -105,7 +122,7 @@ while True:
     ball.setx(ball.xcor() + ball.dx)
     ball.sety(ball.ycor() + ball.dy)
 
-    # Border checking
+    # Border checking 
     # .............Top.............
     if ball.ycor() > 290:
         ball.sety(290)
@@ -145,3 +162,4 @@ while True:
         pen_c.goto(0, -45)
         pen_c.write("Score: {}".format(count), align="center", font=("Carrier", 30, "normal"))
         turtle.done()
+        break
